@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <td>Repo</td>
+      <td></td>
+    </tr>
+  </thead>
+  {{#each repositories as |repository|}}
+    <tbody>
+      <tr>
+        <td>{{repository.fullName}}</td>
+        <td>
+          {{toggle-activation-button repo=repository activate='activate' deactivate='deactivate'}}
+        </td>
+      </tr>
+    </tbody>
+  {{/each}}
+</table>

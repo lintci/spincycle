@@ -16,6 +16,29 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    torii: {
+      sessionServiceName: 'session',
+      providers: {
+        'github-oauth2': {
+          scope: 'user:email,repo'
+        }
+      }
+    },
+
+    laundromat: {
+      apiVersion: 'api/v1'
+    },
+
+    contentSecurityPolicy: {
+      'default-src': "'none'",
+      'script-src': "'self'",
+      'font-src': "'self'",
+      'connect-src': "'self' https://api.lintci.com http://localhost:8080", // Allow data (ajax/websocket) from api.mixpanel.com and custom-api.local
+      'img-src': "'self'",
+      'style-src': "'self'", // Allow inline styles and loaded CSS from http://fonts.googleapis.com
+      'media-src': "'self'"
     }
   };
 
@@ -25,6 +48,9 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.torii.providers['github-oauth2'].apiKey = 'ff35d7dec8911f1337b3';
+    ENV.torii.providers['github-oauth2'].redirectUri = 'http://localhost:4200/login';
+    ENV.laundromat.apiHost = 'http://localhost:8080'
   }
 
   if (environment === 'test') {
@@ -40,8 +66,13 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.torii.providers['github-oauth2'].apiKey = '7e78c3caa94895775b3a';
+    ENV.torii.providers['github-oauth2'].redirectUri = 'https://spincycle.lintci.com/login';
+    ENV.laundromat.apiHost = 'https://api.lintci.com'
   }
+
+  ENV.laundromat.apiNamespace = ENV.laundromat.apiHost + '/' + ENV.laundromat.apiVersion
+  ENV.laundromat.apiTokenEndpoint = ENV.laundromat.apiNamespace + '/auth/token'
 
   return ENV;
 };
